@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moeflow"
+version = "0.1.0.dev0"
+description = "MoEFlow: CUDA-Graph-capable expert parallelism and MoE kernel experiments on NVIDIA B200"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+dependencies = ["torch>=2.13", "triton>=3.7"]
+
+[project.optional-dependencies]
+vllm = ["vllm==0.32.0"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.entry-points."vllm.general_plugins"]
+moeflow = "moeflow.integrations.vllm_plugin:register"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["moeflow*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+pythonpath = ["tests", "scripts"]
+markers = [
+    "gpu: needs one CUDA GPU",
+    "multigpu: needs >=2 GPUs, launched via torchrun (scripts/run_multigpu_check.sh)",
+    "slow: full-size shapes (hidden 4096 / 288 experts)",
+    "vllm: needs the pinned vLLM install",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+src = [".", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E741", "B905", "N802"]

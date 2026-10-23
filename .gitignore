@@ -1,0 +1,44 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+# Large raw artifacts (nsys traces, checkpoints) stay out of git; small JSON results are tracked.
+*.nsys-rep
+*.qdrep
+*.sqlite
+results/**/*.pt
+third_party/*/
+checkpoints/
+logs/
+
+# Runtime logs and local history backups stay on this machine.
+*.log
+*.log.*
+*.out
+*.err
+logs/
+.history-backup/
+.clean-checkouts/
+
+# Personal configuration and credentials.
+.env
+.env.*
+!.env.example
+.aws/
+.ssh/
+*.pem
+*.key
+
+# Raw measurement outputs stay local; docs cite them by path.
+results/
+
+# Internal project instructions stay local.
+CLAUDE.md
+PROJECT.md
+
+# Documentation is published separately once reorganised.
+docs/
